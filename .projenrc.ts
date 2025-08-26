@@ -4,6 +4,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   packageName: "ses-cloudwatch",
   author: "Pablo Cano",
   authorAddress: "pablo.cano@merapar.com",
+  majorVersion: 1,
   cdkVersion: "2.212.0",
   defaultReleaseBranch: "main",
   jsiiVersion: "~5.8.0",
