@@ -1,17 +1,38 @@
 import { awscdk } from 'projen';
 const project = new awscdk.AwsCdkConstructLibrary({
+  name: 'ses-cloudwatch',
+  packageName: 'ses-cloudwatch',
   author: 'Pablo Cano',
   authorAddress: 'pablo.cano@merapar.com',
   cdkVersion: '2.212.0',
   defaultReleaseBranch: 'main',
   jsiiVersion: '~5.8.0',
-  name: 'ses-cloudwatch',
+  jest: true,
   projenrcTs: true,
   repositoryUrl: 'https://github.com/pablocano/ses-cloudwatch.git',
+  keywords: [
+    'aws',
+    'aws-cdk',
+    'cdk',
+    'ses',
+    'simple-email-service',
+    'cloudwatch',
+    'logs',
+    'eventbridge',
+    'email',
+    'monitoring',
+    'observability',
+  ],
 
-  // deps: [],                /* Runtime dependencies of this module. */
-  // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
-  // devDeps: [],             /* Build dependencies for this module. */
-  // packageName: undefined,  /* The "name" in package.json. */
+  gitignore: [".vscode"],
+
+  releaseToNpm: true,
+  prettier: true,
+
+  publishToPypi: {
+    distName: "ses-cloudwatch", // PyPI package name
+    module: "ses_cloudwatch", // Python import path
+  },
 });
+
 project.synth();

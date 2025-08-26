@@ -5,8 +5,8 @@ import {
   Stack,
   aws_events as events,
   aws_events_targets as targets,
-} from 'aws-cdk-lib';
-import { Construct } from 'constructs';
+} from "aws-cdk-lib";
+import { Construct } from "constructs";
 
 /**
  * Properties for `SesCloudWatch`.
@@ -61,7 +61,7 @@ export class SesCloudWatch extends Construct {
     super(scope, id);
 
     // CloudWatch LogGroup to receive SES events. Name is optional.
-    this.logGroup = new logs.LogGroup(this, 'SesEmailLogGroup', {
+    this.logGroup = new logs.LogGroup(this, "SesEmailLogGroup", {
       logGroupName: props.logGroupName,
       removalPolicy: RemovalPolicy.DESTROY,
     });
@@ -69,7 +69,7 @@ export class SesCloudWatch extends Construct {
     // SES Configuration Set with optional custom name.
     this.configurationSet = new ses.ConfigurationSet(
       this,
-      'SesConfigurationSet',
+      "SesConfigurationSet",
       {
         configurationSetName:
           props.configurationSetName ||
@@ -78,13 +78,13 @@ export class SesCloudWatch extends Construct {
     );
 
     // EventBridge rule to match SES events published for this configuration set
-    // EventBridge rule to match all SES events (source = aws.ses).
-    this.eventRule = new events.Rule(this, 'SesEventRule', {
+    // EventBridge rule to match all SES events (source = aws.ses),
+    // but only for the specified configuration set
+    this.eventRule = new events.Rule(this, "SesEventRule", {
       eventPattern: {
-        source: ['aws.ses'],
+        source: ["aws.ses"],
         resources: [
-          'arn:aws:ses:*:*:configuration-set/' +
-            this.configurationSet.configurationSetName,
+          `arn:aws:ses:${Stack.of(this).region}:${Stack.of(this).account}:configuration-set/${this.configurationSet.configurationSetName}`,
         ],
       },
     });
@@ -93,12 +93,12 @@ export class SesCloudWatch extends Construct {
     this.eventRule.addTarget(new targets.CloudWatchLogGroup(this.logGroup));
 
     // Send the configuration set events to the resolved event bus
-    this.configurationSet.addEventDestination('SesEventDestination', {
+    this.configurationSet.addEventDestination("SesEventDestination", {
       destination: ses.EventDestination.eventBus(
         events.EventBus.fromEventBusName(
           this,
-          props.eventRuleName ?? 'DefaultEventBus',
-          'default',
+          props.eventRuleName ?? "DefaultEventBus",
+          "default",
         ),
       ),
       events: props.events ?? [ses.EmailSendingEvent.SEND],
