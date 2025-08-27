@@ -34,6 +34,8 @@ const project = new awscdk.AwsCdkConstructLibrary({
     distName: "ses-cloudwatch", // PyPI package name
     module: "ses_cloudwatch", // Python import path
   },
+  license: "MIT",
+  copyrightOwner: "Merapar Technologies Group B.V.",
 });
 
 project.synth();
