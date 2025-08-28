@@ -38,4 +38,8 @@ const project = new awscdk.AwsCdkConstructLibrary({
   copyrightOwner: "Merapar Technologies Group B.V.",
 });
 
+// Ensure the root tsconfig files do not apply to example/*
+project.tsconfig?.addExclude("examples/**");
+project.tsconfigDev?.addExclude("examples/**");
+
 project.synth();
