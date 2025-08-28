@@ -21,8 +21,10 @@ describe("SesCloudWatch", () => {
       Name: "TestStack-ses-config-set",
     });
 
-    // LogGroup exists (name not specified => not asserting name)
-    template.resourceCountIs("AWS::Logs::LogGroup", 1);
+    // Expect 2 LogGroups:
+    // 1) Construct-created SES events log group
+    // 2) Lambda log group for the custom resource provider that sets the logs resource policy
+    template.resourceCountIs("AWS::Logs::LogGroup", 2);
 
     // EventBridge rule with correct pattern
     template.hasResourceProperties("AWS::Events::Rule", {
