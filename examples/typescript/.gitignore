@@ -9,3 +9,6 @@ node_modules
 cdk.out
 
 dist/
+
+# The example does not use projen. So commit the tsconfig.json
+!tsconfig.json
